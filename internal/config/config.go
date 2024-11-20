@@ -1,5 +1,8 @@
 package config
 
+// Package config is responsible for handling application configuration.
+// It provides functionality to read and parse configuration from a YAML file.
+
 import (
 	"gopkg.in/yaml.v3"
 	"log"
@@ -8,8 +11,10 @@ import (
 	"ses_back/internal/models"
 )
 
+// Config holds the application configuration.
 var Config models.AppConfig
 
+// GetConfigPath returns the path to the configuration file.
 func GetConfigPath() (string, error) {
 	wd, err := os.Getwd()
 	if err != nil {
@@ -25,6 +30,7 @@ func GetConfigPath() (string, error) {
 	return configPath, nil
 }
 
+// ReadConfig reads and parses the configuration from the YAML file.
 func ReadConfig() {
 	YamlPath, err := GetConfigPath()
 	if err != nil {

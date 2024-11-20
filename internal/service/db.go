@@ -8,6 +8,7 @@ import (
 	"ses_back/internal/models"
 )
 
+// GetEvents retrieves all events from the database.
 func GetEvents(ctx *gin.Context) {
 	data, err := DBselect("")
 	if err != nil {
@@ -16,6 +17,7 @@ func GetEvents(ctx *gin.Context) {
 	ctx.IndentedJSON(http.StatusOK, data)
 }
 
+// getConditionsPrompt generates a SQL query string based on the provided filters.
 func getConditionsPrompt(filters *models.DBFilterModel) string {
 	var query string
 
@@ -47,6 +49,7 @@ func getConditionsPrompt(filters *models.DBFilterModel) string {
 	return query
 }
 
+// getDataByFilter retrieves data from the database based on the provided filters.
 func getDataByFilter(filters *models.DBFilterModel) []models.Bulls {
 	var conditions = getConditionsPrompt(filters)
 	var data, err = DBselect(conditions)
@@ -56,6 +59,7 @@ func getDataByFilter(filters *models.DBFilterModel) []models.Bulls {
 	return data
 }
 
+// GetEvByFilter handles HTTP requests to retrieve events by filter.
 func GetEvByFilter(ctx *gin.Context) {
 	// Input:
 	var inputData models.DBFilterModel

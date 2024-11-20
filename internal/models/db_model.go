@@ -1,5 +1,8 @@
 package models
 
+// This package contains data models used throughout the application.
+
+// Bulls represents a data structure for earthquake data.
 type Bulls struct {
 	Id        int32   `json:"id,omitempty"`
 	Event_id  string  `json:"event_id,omitempty"`

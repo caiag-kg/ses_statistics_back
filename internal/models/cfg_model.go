@@ -1,5 +1,6 @@
 package models
 
+// PostgreSQL configuration structure
 type psqlConfig struct {
 	DriverName string `yaml:"DriverName" default:"postgres"`
 	Host       string `yaml:"Host" default:"localhost"`
@@ -10,17 +11,14 @@ type psqlConfig struct {
 	TableName  string `yaml:"TableName" default:"users"`
 }
 
-type dbConfig struct {
-	ConnStr string `yaml:"ConnStr"`
-}
-
+// Server configuration structure
 type serverConfig struct {
 	Host string `yaml:"Host" default:"localhost"`
 	Port string `yaml:"Port" default:"8080"`
 }
 
+// Application configuration structure
 type AppConfig struct {
 	Psql     psqlConfig
-	DataBase dbConfig
 	Server   serverConfig
 }

@@ -1,0 +1,12 @@
+psql:
+    DriverName: postgres # Can't be changed!
+    Host: localhost
+    Port: 5432
+    User: postgres
+    Password: postgres
+    DbName: DataBase
+    TableName: Table
+
+server:
+    Host: localhost
+    Port: 8080

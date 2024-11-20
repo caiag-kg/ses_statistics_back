@@ -1,5 +1,8 @@
 package service
 
+// Package service provides functionality for interacting with the PostgreSQL database.
+// It includes functions for connecting to the database, creating tables, inserting data, and selecting data.
+
 import (
 	"database/sql"
 	"fmt"
@@ -9,7 +12,9 @@ import (
 	"ses_back/internal/models"
 )
 
+// Function connect2DB establishes a connection to the PostgreSQL database.
 func connect2DB() *sql.DB {
+	// Read the configuration file to get the database settings.
 	config.ReadConfig()
 	psqlCfg := config.Config.Psql
 	dsn := fmt.Sprintf(
@@ -17,11 +22,13 @@ func connect2DB() *sql.DB {
 		psqlCfg.Host, psqlCfg.User, psqlCfg.Password, psqlCfg.DbName, psqlCfg.Port,
 	)
 
+	// Open a connection to the database.
 	db, err := sql.Open(psqlCfg.DriverName, dsn)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Ping the database to verify the connection.
 	if err := db.Ping(); err != nil {
 		log.Fatal(err)
 	}
@@ -29,6 +36,7 @@ func connect2DB() *sql.DB {
 	return db
 }
 
+// Function CreateTable creates a table in the database if it does not already exist.
 //func CreateTable() {
 //	var db = connect2DB()
 //	defer func(open *sql.DB) {
@@ -53,7 +61,8 @@ func connect2DB() *sql.DB {
 //		log.Fatal(err)
 //	}
 //}
-//
+
+// Function InsertIntoTable inserts a new row into the table.
 //func InsertIntoTable(row models.Bulls) int {
 //	var db = connect2DB()
 //	defer func(open *sql.DB) {
@@ -76,10 +85,9 @@ func connect2DB() *sql.DB {
 //	return pk
 //}
 
+// Function DBselect retrieves data from the table based on the provided conditions.
 func DBselect(conditions string) ([]models.Bulls, error) {
-	//config.ReadConfig()
-	//psqlCfg := config.Config.Psql
-
+	// Connect to the database.
 	var db = connect2DB()
 	defer func(open *sql.DB) {
 		err := open.Close()
@@ -88,6 +96,7 @@ func DBselect(conditions string) ([]models.Bulls, error) {
 		}
 	}(db)
 
+	// Initialize variables to store the retrieved data.
 	var data []models.Bulls
 	var id int32
 	var eventId string
@@ -96,13 +105,16 @@ func DBselect(conditions string) ([]models.Bulls, error) {
 	var evDate string
 	var evTime string
 
+	// Construct the query based on the provided conditions.
 	var query = `SELECT * FROM bulls ` + conditions
 	rows, err := db.Query(query)
 
+	// Check for errors.
 	if err != nil {
 		return nil, err
 	}
 
+	// Close the rows and database connection when done.
 	defer func(open *sql.DB) {
 		err := open.Close()
 		if err != nil {
@@ -117,6 +129,7 @@ func DBselect(conditions string) ([]models.Bulls, error) {
 		}
 	}(rows)
 
+	// Iterate over the retrieved rows and append the data to the result slice.
 	for rows.Next() {
 		err := rows.Scan(&id, &eventId, &epicenter, &mag, &evDate, &evTime)
 		if err != nil {
